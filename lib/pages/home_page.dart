@@ -17,18 +17,14 @@ class _HomePageState extends State<HomePage> {
     SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35)),
+          title: Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35, color: theme.colorScheme.primary),),
           backgroundColor: theme.colorScheme.secondary,
           foregroundColor: theme.colorScheme.tertiary,
           actions: [
             // need to update this to use the propfile image from google oauth
-            Icon(
-              Icons.account_circle_outlined,
-              size: 44,
-              color: theme.colorScheme.primary,
-            ), 
+            GoogleUserCircleAvatar(identity: widget.user!, foregroundColor: theme.colorScheme.tertiary, backgroundColor: theme.colorScheme.primary),
             const SizedBox(
-              width: 10,
+              width: 15,
             )
           ],
         ),
@@ -37,6 +33,30 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               color: theme.colorScheme.primary,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width - 50,
+                    child: Text("Welcome to Consentual ${widget.user!.displayName!}, Your app for signing digital consents.", style: TextStyle(fontFamily: 'Jost', fontSize: 24, color: theme.colorScheme.tertiary)),
+                  ),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  Container(
+                    height: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
+                    width: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(22)),
+                    ),
+                  )
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
