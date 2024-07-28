@@ -13,11 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  //MyApp({super.key});
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  // clientId: 'your-client_id.apps.googleusercontent.com',
     scopes: [
     'email',
     'https://www.googleapis.com/auth/userinfo.profile'
@@ -30,7 +27,6 @@ class _MyAppState extends State<MyApp> {
     return user;
   }
 
-  //GoogleSignInAccount? _currentUser = _googleSignIn.currentUser;
 
   @override
   Widget build(BuildContext context) {
