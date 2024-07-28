@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
     SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("App Name", style: TextStyle(fontFamily: 'Jost', fontSize: 35)),
+          title: const Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35)),
           backgroundColor: theme.colorScheme.secondary,
           foregroundColor: theme.colorScheme.tertiary,
           actions: [
