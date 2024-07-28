@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
+import "package:google_sign_in/google_sign_in.dart";
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final GoogleSignInAccount? user;
+  const HomePage({required this.user, super.key});
   @override
   _HomePageState createState() => _HomePageState();
 }

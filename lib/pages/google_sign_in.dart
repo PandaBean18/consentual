@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
   void _navigateToHomePage() {
     Navigator.pushReplacement(context, 
       MaterialPageRoute(
-        builder: (context) => const HomePage(),
+        builder: (context) => HomePage(user: _currentUser),
       )
     );
   }
@@ -58,22 +58,40 @@ class _SignInState extends State<SignIn> {
   @override  
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35)),
-      ),
-      body: Center(
-       child: (
-        _currentUser == null ?
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Continue to sign in with google.", style: TextStyle(fontFamily: 'Jost', fontSize: 35)),
-            ElevatedButton(onPressed: _handleSignIn, child: Text('Sign In', style: TextStyle(fontFamily: 'Jost', fontSize: 22)))
-          ],
-        ) : 
-        const CircularProgressIndicator()
-       ),
-      ),
-    );
+      // appBar: AppBar(
+      //   title: const Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35)),
+      //   backgroundColor: Theme.of(context).colorScheme.secondary,
+      //   foregroundColor: Theme.of(context).colorScheme.tertiary,
+      // ),
+      body: Container (
+        color: Theme.of(context).colorScheme.primary,
+        child: Center(
+          child: (
+            _currentUser == null ?
+            Container(
+              height: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
+              width:  ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: const BorderRadius.all(Radius.circular(44)),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Continue to sign in with google.", style: TextStyle(fontFamily: 'Jost', fontSize: 30, color: Theme.of(context).colorScheme.tertiary, ), textAlign: TextAlign.center),
+                  const SizedBox(height: 50,),
+                  ElevatedButton(onPressed: _handleSignIn, 
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary, 
+                      foregroundColor: Theme.of(context).colorScheme.tertiary,
+                      minimumSize: const Size(300, 50)
+                      ), 
+                    child: const Text('Sign In', style: TextStyle(fontFamily: 'Jost', fontSize: 22, )), )
+                ],
+              )) : 
+            const CircularProgressIndicator()
+          ),
+        ),
+    ));
   }
 }
