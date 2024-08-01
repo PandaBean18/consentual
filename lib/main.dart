@@ -47,9 +47,12 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               //primarySwatch: Colors.blue,
               colorScheme: const ColorScheme.dark().copyWith(
-                primary: const Color.fromARGB(255, 0, 15, 31),
-                secondary: const Color.fromARGB(255, 0, 95, 143),
-                tertiary: const Color.fromRGBO(204, 255, 255, 1)
+                primary: Colors.black,
+                //primary: const Color.fromARGB(255, 0, 15, 31),
+                //secondary: const Color.fromARGB(255, 0, 95, 143),
+                //tertiary: const Color.fromRGBO(204, 255, 255, 1)
+                secondary: Color.fromARGB(255, 0, 15, 54),
+                tertiary: Colors.white
               ),
               
             ),

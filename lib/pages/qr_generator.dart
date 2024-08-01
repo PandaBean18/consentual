@@ -23,9 +23,14 @@ class _QrGeneratorState extends State<QrGenerator> {
     return QrImageView(
       data: encString,
       version: QrVersions.auto,
-      size: ((MediaQuery.of(context).size.width - 100) < 0 ? 450 : (MediaQuery.of(context).size.width - 100)),
-      eyeStyle: const QrEyeStyle(
-        eyeShape: QrEyeShape.circle,
+      size: ((MediaQuery.of(context).size.width - 150) < 0 ? 425 : (MediaQuery.of(context).size.width - 150)),
+      eyeStyle: QrEyeStyle(
+        //eyeShape: QrEyeShape.circle,
+        color: Theme.of(context).colorScheme.secondary
+      ),
+      dataModuleStyle: QrDataModuleStyle(
+        dataModuleShape: QrDataModuleShape.square,
+        color: Theme.of(context).colorScheme.secondary
       ),
     );
   }

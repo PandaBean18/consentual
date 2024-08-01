@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35, color: theme.colorScheme.primary),),
+          title: Text("Consentual", style: TextStyle(fontFamily: 'Jost', fontSize: 35, color: theme.colorScheme.tertiary),),
           backgroundColor: theme.colorScheme.secondary,
           foregroundColor: theme.colorScheme.tertiary,
           actions: [
@@ -48,12 +48,12 @@ class _HomePageState extends State<HomePage> {
                     height: 100,
                   ),
                   Container(
-                    height: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
-                    width: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
+                    height: ((MediaQuery.of(context).size.width - 100) < 0 ? 450 : (MediaQuery.of(context).size.width - 100)),
+                    width: ((MediaQuery.of(context).size.width - 100) < 0 ? 450 : (MediaQuery.of(context).size.width - 100)),
                     child: QrGenerator(),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(22)),
+                      borderRadius: BorderRadius.all(Radius.circular(11)),
                     ),
                     
                   )
@@ -71,12 +71,12 @@ class _HomePageState extends State<HomePage> {
                     Icon(
                       Icons.home, 
                       size: 44,
-                      color: theme.colorScheme.primary,
+                      color: theme.colorScheme.tertiary,
                     ), 
                     Icon(
                       Icons.file_present,
                       size: 44, 
-                      color: theme.colorScheme.primary
+                      color: theme.colorScheme.tertiary
                     )
                   ],
                 ),
