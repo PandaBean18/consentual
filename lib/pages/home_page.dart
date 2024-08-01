@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 import "package:google_sign_in/google_sign_in.dart";
+import "qr_generator.dart";
 
 class HomePage extends StatefulWidget {
   final GoogleSignInAccount? user;
@@ -50,10 +50,12 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
                     width: ((MediaQuery.of(context).size.width - 50) < 0 ? 500 : (MediaQuery.of(context).size.width - 50)),
+                    child: QrGenerator(),
                     decoration: const BoxDecoration(
-                      color: Colors.grey,
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(22)),
                     ),
+                    
                   )
                 ],
               ),
