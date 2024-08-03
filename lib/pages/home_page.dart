@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "qr_generator.dart";
+import "qr_scanner.dart";
 
 class HomePage extends StatefulWidget {
   final GoogleSignInAccount? user;
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool qrCodeInFocus = true;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -61,7 +63,9 @@ class _HomePageState extends State<HomePage> {
                               qrCodeInFocus = true;
                             });
                           },
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
                             width: 125,
                             height: 50,
                             alignment: Alignment.center,
@@ -79,9 +83,11 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             setState(() {
                               qrCodeInFocus = false;
-                            });
+                            }); 
                           },
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
                             width: 125,
                             height: 50,
                             alignment: Alignment.center,
@@ -108,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(11)),
                     ),
-                    child:  QrGenerator(),
+                    child: qrCodeInFocus ? QrGenerator() : const QrScanner(),
                   )
                 ],
               ),
