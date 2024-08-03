@@ -45,17 +45,54 @@ class _HomePageState extends State<HomePage> {
                     child: Text("Welcome to Consentual ${widget.user!.displayName!}, Your app for signing digital consents.", style: TextStyle(fontFamily: 'Jost', fontSize: 24, color: theme.colorScheme.tertiary)),
                   ),
                   const SizedBox(
-                    height: 100,
+                    height: 75,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 125,
+                          height: 50,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16))
+                          ),
+                          child: Text(
+                            "QR Code",
+                            style: TextStyle(fontFamily: 'Jost', fontSize: 24, color: theme.colorScheme.secondary, fontWeight: FontWeight.w600),
+                          ),
+                        ), 
+                        //Container(width: 1, color: Colors.white,),
+                        Container(
+                          width: 125,
+                          height: 50,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: const BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16))
+                          ),
+                          child: Text(
+                            "Scanner",
+                            style: TextStyle(fontFamily: 'Jost', fontSize: 24, color: theme.colorScheme.tertiary, fontWeight: FontWeight.w600),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25
                   ),
                   Container(
                     height: ((MediaQuery.of(context).size.width - 100) < 0 ? 450 : (MediaQuery.of(context).size.width - 100)),
                     width: ((MediaQuery.of(context).size.width - 100) < 0 ? 450 : (MediaQuery.of(context).size.width - 100)),
-                    child: QrGenerator(),
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(11)),
                     ),
-                    
+                    child:  QrGenerator(),
                   )
                 ],
               ),

@@ -25,7 +25,6 @@ class _QrGeneratorState extends State<QrGenerator> {
       version: QrVersions.auto,
       size: ((MediaQuery.of(context).size.width - 150) < 0 ? 425 : (MediaQuery.of(context).size.width - 150)),
       eyeStyle: QrEyeStyle(
-        //eyeShape: QrEyeShape.circle,
         color: Theme.of(context).colorScheme.secondary
       ),
       dataModuleStyle: QrDataModuleStyle(
