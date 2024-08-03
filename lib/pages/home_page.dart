@@ -10,9 +10,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool qrCodeInFocus = true;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    TextStyle selectedButtonTextStyle = TextStyle(fontFamily: 'Jost', fontSize: 24, color: Theme.of(context).colorScheme.secondary);
+    TextStyle unselectedButtonTextStyle = TextStyle(fontFamily: 'Jost', fontSize: 24, color: Theme.of(context).colorScheme.tertiary);
     return 
     SafeArea(
       child: Scaffold(
@@ -52,33 +55,46 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 125,
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.tertiary,
-                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16))
-                          ),
-                          child: Text(
-                            "QR Code",
-                            style: TextStyle(fontFamily: 'Jost', fontSize: 24, color: theme.colorScheme.secondary, fontWeight: FontWeight.w600),
-                          ),
-                        ), 
-                        //Container(width: 1, color: Colors.white,),
-                        Container(
-                          width: 125,
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: const BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16))
-                          ),
-                          child: Text(
-                            "Scanner",
-                            style: TextStyle(fontFamily: 'Jost', fontSize: 24, color: theme.colorScheme.tertiary, fontWeight: FontWeight.w600),
-                          ),
-                        )
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              qrCodeInFocus = true;
+                            });
+                          },
+                          child: Container(
+                            width: 125,
+                            height: 50,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: qrCodeInFocus ?  Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.secondary,
+                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16))
+                            ),
+                            child: Text(
+                              "QR Code",
+                              style: qrCodeInFocus ? selectedButtonTextStyle : unselectedButtonTextStyle,
+                            ),
+                          ), 
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              qrCodeInFocus = false;
+                            });
+                          },
+                          child: Container(
+                            width: 125,
+                            height: 50,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: !qrCodeInFocus ?  Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.secondary,
+                              borderRadius: const BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16))
+                            ),
+                            child: Text(
+                              "Scanner",
+                              style: !qrCodeInFocus ? selectedButtonTextStyle : unselectedButtonTextStyle,
+                            ),
+                          )
+                        ),
                       ],
                     ),
                   ),
