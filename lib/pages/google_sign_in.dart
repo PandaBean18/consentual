@@ -1,6 +1,9 @@
+import "dart:convert";
 import "package:flutter/material.dart";
 import 'package:google_sign_in/google_sign_in.dart';
 import "home_page.dart";
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SignIn extends StatefulWidget {
   @override  
@@ -13,7 +16,10 @@ class _SignInState extends State<SignIn> {
   // clientId: 'your-client_id.apps.googleusercontent.com',
     scopes: [
     'email',
-    'https://www.googleapis.com/auth/userinfo.profile'
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/user.gender.read',
+    'https://www.googleapis.com/auth/profile.agerange.read',
+    'https://www.googleapis.com/auth/user.phonenumbers.read',
   ]);
 
   GoogleSignInAccount? _currentUser;
@@ -22,9 +28,29 @@ class _SignInState extends State<SignIn> {
   void initState() {
     super.initState();
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
+      setState(() async {
         _currentUser = account;
         if (_currentUser != null) {
+          print(_currentUser);
+          final headers = await _currentUser!.authHeaders;
+
+          final r = await http.get(Uri.parse("https://people.googleapis.com/v1/people/me?personFields=emailAddresses,genders,ageRange,phoneNumbers"),
+            headers: {
+              "Authorization": headers["Authorization"]!
+            }
+          );
+      final response = jsonDecode(r.body);
+
+          http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
+          headers: {
+            "Content-Type": "application/json"
+          },
+            body: jsonEncode({
+              "username": _googleSignIn.currentUser!.displayName,
+              "email": _googleSignIn.currentUser!.email,
+              "gender": response["genders"][0]["value"]
+            })
+          );
           _navigateToHomePage();
         }
       });

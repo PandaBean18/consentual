@@ -1,9 +1,12 @@
+import "dart:convert";
 import "package:consentual/pages/home_page.dart";
 import "package:flutter/material.dart";
 import "./pages/google_sign_in.dart";
 import 'package:google_sign_in/google_sign_in.dart';
-
-void main() {
+import "package:http/http.dart" as http;
+import "package:flutter_dotenv/flutter_dotenv.dart";
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 
@@ -14,16 +17,46 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+
+
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
     'email',
-    'https://www.googleapis.com/auth/userinfo.profile'
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/user.gender.read',
+    'https://www.googleapis.com/auth/profile.agerange.read',
+    'https://www.googleapis.com/auth/user.phonenumbers.read',
+    //'https://www.googleapis.com/auth/user.birthday.read',
+    //'phoneNumber'
   ]);
 
   Widget home = SignIn();
   
   Future<GoogleSignInAccount?> _checkSignInStatus() async {
     GoogleSignInAccount? user = await _googleSignIn.signInSilently();
+    if (user != null) {
+      final headers = await _googleSignIn.currentUser!.authHeaders;
+
+      final r = await http.get(Uri.parse("https://people.googleapis.com/v1/people/me?personFields=emailAddresses,genders,ageRange,phoneNumbers"),
+        headers: {
+          "Authorization": headers["Authorization"]!
+        }
+      );
+      final response = jsonDecode(r.body);
+      // print(response["genders"]);
+
+      http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
+      headers: {
+        "Content-Type": "application/json"
+      },
+        body: jsonEncode({
+          "username": _googleSignIn.currentUser!.displayName,
+          "email": _googleSignIn.currentUser!.email,
+          "gender": response["genders"][0]["value"]
+        })
+      );
+
+    }
     return user;
   }
 
