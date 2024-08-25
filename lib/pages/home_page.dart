@@ -5,7 +5,8 @@ import "qr_scanner.dart";
 
 class HomePage extends StatefulWidget {
   final GoogleSignInAccount? user;
-  const HomePage({required this.user, super.key});
+  final String? userConsentualId;
+  const HomePage({required this.user, required this.userConsentualId, super.key});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -114,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(11)),
                     ),
-                    child: qrCodeInFocus ? QrGenerator() : const QrScanner(),
+                    child: qrCodeInFocus ? QrGenerator(userConsentualId: widget.userConsentualId!,) : const QrScanner(),
                   )
                 ],
               ),

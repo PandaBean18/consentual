@@ -1,27 +1,19 @@
 import "package:flutter/material.dart";
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dart:math';
 
 class QrGenerator extends StatefulWidget {
+  final String? userConsentualId;
+  const QrGenerator({required this.userConsentualId, super.key});
   @override  
   _QrGeneratorState createState() => _QrGeneratorState();
 }
 
 class _QrGeneratorState extends State<QrGenerator> {
-  var encString;  
-
-  @override  
-  void initState() {
-    super.initState();
-    var r = Random.secure();
-    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    encString = List.generate(16, (index) => _chars[r.nextInt(_chars.length)]).join();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return QrImageView(
-      data: encString,
+      data: widget.userConsentualId!,
       version: QrVersions.auto,
       size: ((MediaQuery.of(context).size.width - 150) < 0 ? 425 : (MediaQuery.of(context).size.width - 150)),
       eyeStyle: QrEyeStyle(

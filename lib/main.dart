@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
 
   Widget home = SignIn();
   
-  Future<GoogleSignInAccount?> _checkSignInStatus() async {
+  Future<Map<String, dynamic>?> _checkSignInStatus() async {
     GoogleSignInAccount? user = await _googleSignIn.signInSilently();
     if (user != null) {
       final headers = await _googleSignIn.currentUser!.authHeaders;
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       final response = jsonDecode(r.body);
       // print(response["genders"]);
 
-      http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
+      final serverR = await http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
       headers: {
         "Content-Type": "application/json"
       },
@@ -56,8 +56,17 @@ class _MyAppState extends State<MyApp> {
         })
       );
 
+      final serverResponse = jsonDecode(serverR.body);
+
+      final Map<String, dynamic> parsedUser = {
+        "googleSignInAccount": user,
+        "userConsentualId": serverResponse["userId"],
+      };
+
+      return parsedUser;
     }
-    return user;
+
+    return null;
   }
 
 
@@ -65,7 +74,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return 
     FutureBuilder(future: _checkSignInStatus(), 
-      builder: (BuildContext context, AsyncSnapshot<GoogleSignInAccount?> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(  
             home: Scaffold(
@@ -89,7 +98,7 @@ class _MyAppState extends State<MyApp> {
               ),
               
             ),
-            home:  ((snapshot.hasError || (!snapshot.hasData && snapshot.data == null)) ? SignIn() : HomePage(user: snapshot.data)),
+            home:  ((snapshot.hasError || (!snapshot.hasData && snapshot.data == null)) ? SignIn() : HomePage(user: snapshot.data!["googleSignInAccount"], userConsentualId: snapshot.data!["userConsentualId"],)),
           );
         }
     });

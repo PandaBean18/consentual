@@ -23,6 +23,7 @@ class _SignInState extends State<SignIn> {
   ]);
 
   GoogleSignInAccount? _currentUser;
+  String? userConsentualId;
 
   @override   
   void initState() {
@@ -31,7 +32,6 @@ class _SignInState extends State<SignIn> {
       setState(() async {
         _currentUser = account;
         if (_currentUser != null) {
-          print(_currentUser);
           final headers = await _currentUser!.authHeaders;
 
           final r = await http.get(Uri.parse("https://people.googleapis.com/v1/people/me?personFields=emailAddresses,genders,ageRange,phoneNumbers"),
@@ -39,9 +39,9 @@ class _SignInState extends State<SignIn> {
               "Authorization": headers["Authorization"]!
             }
           );
-      final response = jsonDecode(r.body);
+          final response = jsonDecode(r.body);
 
-          http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
+          final serverR = await http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
           headers: {
             "Content-Type": "application/json"
           },
@@ -51,6 +51,9 @@ class _SignInState extends State<SignIn> {
               "gender": response["genders"][0]["value"]
             })
           );
+
+          final serverResponse = jsonDecode(serverR.body);
+          userConsentualId = serverResponse["userId"];
           _navigateToHomePage();
         }
       });
@@ -76,7 +79,7 @@ class _SignInState extends State<SignIn> {
   void _navigateToHomePage() {
     Navigator.pushReplacement(context, 
       MaterialPageRoute(
-        builder: (context) => HomePage(user: _currentUser),
+        builder: (context) => HomePage(user: _currentUser, userConsentualId: userConsentualId,),
       )
     );
   }
