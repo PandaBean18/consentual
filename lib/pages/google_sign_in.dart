@@ -20,10 +20,23 @@ class _SignInState extends State<SignIn> {
     'https://www.googleapis.com/auth/user.gender.read',
     'https://www.googleapis.com/auth/profile.agerange.read',
     'https://www.googleapis.com/auth/user.phonenumbers.read',
+    'https://www.googleapis.com/auth/user.birthday.read',
   ]);
 
   GoogleSignInAccount? _currentUser;
   String? userConsentualId;
+
+  int calcAgeFromDOB(Map<String, dynamic> dob) {
+    DateTime today = DateTime.now();
+    DateTime dobDate = DateTime(dob["year"]!.toInt(), dob["month"]!.toInt(), dob["day"]!.toInt());
+    int age = today.year - dobDate.year;
+
+    if (today.month < dobDate.month || (today.month == dobDate.month && today.day < dobDate.day)) {
+      age--;
+    }
+
+    return age;
+  }
 
   @override   
   void initState() {
@@ -34,12 +47,13 @@ class _SignInState extends State<SignIn> {
         if (_currentUser != null) {
           final headers = await _currentUser!.authHeaders;
 
-          final r = await http.get(Uri.parse("https://people.googleapis.com/v1/people/me?personFields=emailAddresses,genders,ageRange,phoneNumbers"),
+          final r = await http.get(Uri.parse("https://people.googleapis.com/v1/people/me?personFields=emailAddresses,genders,ageRange,phoneNumbers,birthdays"),
             headers: {
               "Authorization": headers["Authorization"]!
             }
           );
           final response = jsonDecode(r.body);
+          
 
           final serverR = await http.post(Uri.parse("http://${dotenv.env['SERVER_DOMAIN']}:3000/users/new"), 
           headers: {
@@ -48,7 +62,9 @@ class _SignInState extends State<SignIn> {
             body: jsonEncode({
               "username": _googleSignIn.currentUser!.displayName,
               "email": _googleSignIn.currentUser!.email,
-              "gender": response["genders"][0]["value"]
+              "gender": response["genders"][0]["value"],
+              "dob": "${response["birthdays"][0]["date"]["day"]}-${response["birthdays"][0]["date"]["month"]}-${response["birthdays"][0]["date"]["year"]}",
+              "age": calcAgeFromDOB(response["birthdays"][0]["date"]),
             })
           );
 
